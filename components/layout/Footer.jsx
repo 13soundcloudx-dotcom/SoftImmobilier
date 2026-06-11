@@ -1,0 +1,186 @@
+import Image from "next/image"
+import Link from "next/link"
+
+/**
+ * Footer — Gold background, white text
+ */
+
+const FOOTER_LINKS = [
+  { label: "Accueil",                  href: "/"                     },
+  { label: "Le Groupe",                href: "/le-groupe"            },
+  { label: "Portefeuille d'actifs",    href: "/portefeuille"         },
+  { label: "Service après location",   href: "/gestion-valorisation" },
+  { label: "Build-to-Suit",            href: "/build-to-suit"        },
+  { label: "Patrimoine Art Déco",      href: "/patrimoine-art-deco"  },
+  { label: "Actualités",               href: "/actualites"           },
+]
+
+const SOCIALS = [
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/profile.php?id=61590664766833",
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+      </svg>
+    ),
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/softgroup_immobilier/",
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+      </svg>
+    ),
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/softgroup.ma",
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+        <rect x="2" y="9" width="4" height="12"/>
+        <circle cx="4" cy="4" r="2"/>
+      </svg>
+    ),
+  },
+]
+
+export default function Footer() {
+  const year = new Date().getFullYear()
+
+  return (
+    <footer className="bg-gold">
+
+      <div className="max-w-7xl mx-auto px-8 md:px-12 lg:px-20 pt-20 pb-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-14">
+
+          {/* Col 1 — Brand + Newsletter */}
+          <div>
+            {/* White logo on gold bg */}
+            <Image
+              src="/img/softgroupe.png"
+              height={200} width={200}
+              alt="Softgroup Immobilier"
+              className="brightness-0 invert"
+            />
+            <div className="w-8 h-px bg-white/40 mt-4 mb-9" />
+
+            <p className="font-sans text-[18px] text-white/80 leading-[1.8] mb-8 max-w-[240px]">
+              L'immobilier d'excellence au Maroc — logistique, industriel, résidentiel, bureaux, et commercial depuis plus de 35 ans.
+            </p>
+
+            <p className="font-sans text-[15px] font-bold tracking-[0.28em] uppercase text-white/60 mb-2">
+              Newsletter
+            </p>
+            <p className="font-sans text-[18px] text-white/60 leading-[1.8] mb-5 max-w-[240px]">
+              Recevez nos dernières actualités et disponibilités en avant-première.
+            </p>
+
+            <form className="flex max-w-[260px]">
+              <input
+                type="email"
+                placeholder="Votre e-mail"
+                aria-label="Adresse e-mail pour la newsletter"
+                className="flex-1 min-w-0 bg-white/20 border border-white/30 text-white text-[15px] px-4 py-3 placeholder:text-white/50 focus:outline-none focus:border-white transition-colors duration-200"
+              />
+              <button
+                type="submit"
+                aria-label="S'abonner"
+                className="bg-white text-gold font-sans text-sm font-semibold px-4 py-3 hover:bg-white/90 transition-colors duration-300 flex-none"
+              >
+                →
+              </button>
+            </form>
+          </div>
+
+          {/* Col 2 — Contact */}
+          <div>
+            <p className="font-sans text-[15px] font-bold tracking-[0.28em] uppercase text-white/60 mb-7">
+              Contact
+            </p>
+            <div className="flex flex-col gap-6">
+              <div>
+                <p className="font-serif text-base text-white mb-1">Casablanca</p>
+                <p className="font-sans text-[18px] text-white/70 leading-[1.8]">
+                  101 Boulevard de la Corniche, Casablanca
+                </p>
+              </div>
+              <div>
+                <p className="font-sans text-[15px] font-bold tracking-[0.2em] uppercase text-white/50 mb-1">E-mail</p>
+                <a href="mailto:immo.contact@softgroup.ma" className="font-sans text-[15px] text-white/80 hover:text-white transition-colors duration-200">
+                  immo.contact@softgroup.ma
+                </a>
+              </div>
+              <div>
+                <p className="font-sans text-[15px] font-bold tracking-[0.2em] uppercase text-white/50 mb-1">Téléphone</p>
+                <a href="tel:+212661978104" className="font-sans text-[15px] text-white/80 hover:text-white transition-colors duration-200">
+                  +212 661 978 104
+                </a>
+              </div>
+              <div>
+                <p className="font-sans text-[15px] font-bold tracking-[0.2em] uppercase text-white/50 mb-3">Réseaux sociaux</p>
+                <div className="flex items-center gap-4">
+                  {SOCIALS.map(({ label, href, icon }) => (
+                    <a
+                      key={label}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={label}
+                      className="text-white/60 hover:text-white transition-colors duration-200"
+                    >
+                      {icon}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Col 3 — Navigation */}
+          <div>
+            <p className="font-sans text-[14px] font-bold tracking-[0.28em] uppercase text-white/60 mb-7">
+              Navigation
+            </p>
+            <nav className="flex flex-col gap-3.5">
+              {FOOTER_LINKS.map(({ label, href }) => (
+                <Link
+                  key={label}
+                  href={href}
+                  className="font-serif text-base text-white/75 hover:text-white transition-colors duration-200 w-fit"
+                >
+                  {label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom bar */}
+      <div className="border-t border-white/20 px-8 md:px-12 lg:px-20 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
+        <p className="font-sans text-[13px] text-white/55 tracking-wide">
+          © {year} Softgroup Immobilier. Tous droits réservés.
+        </p>
+        <div className="flex gap-6">
+          {[
+            { label: "Mentions légales",             href: "#" },
+            { label: "Politique de confidentialité", href: "#" },
+          ].map(({ label, href }) => (
+            <a
+              key={label}
+              href={href}
+              className="font-sans text-[13px] text-white/55 hover:text-white transition-colors duration-200 tracking-wide"
+            >
+              {label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </footer>
+  )
+}

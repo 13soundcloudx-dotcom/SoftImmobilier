@@ -1,0 +1,184 @@
+"use client"
+
+import { useState, useEffect, useRef } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { ChevronDown } from "lucide-react"
+import SideNav from "./SideNav"
+import Image from "next/image"
+
+/**
+ * Header — Barre de navigation fixe — Light Premium
+ * ─────────────────────────────────────────────────────────
+ * Comportement :
+ *  - Transparent + blanc sur le hero (scrollY < 60px)
+ *  - Fond blanc/95 + accents or après scroll
+ *  - "Portefeuille" → dropdown avec les 5 segments
+ *  - "Planifier une visite" CTA apparaît après scroll
+ *  - Hamburger asymétrique → ouvre SideNav
+ */
+
+const PORTFOLIO_LINKS = [
+  { label: "Logistique & Industriel",      href: "/portefeuille#logistique-industriel"      },
+  { label: "Bureaux & Centres d'Affaires", href: "/portefeuille#bureaux-centres-d-affaires" },
+  { label: "Résidentiel de Prestige",      href: "/portefeuille#residentiel-de-prestige"    },
+  { label: "Retail & Commerce",            href: "/portefeuille#retail-commerce"            },
+  { label: "Terrains & Développements",    href: "/portefeuille#terrains-developpements"    },
+]
+
+export default function Header() {
+  const [scrolled,       setScrolled]       = useState(false)
+  const [navOpen,        setNavOpen]         = useState(false)
+  const [portfolioOpen,  setPortfolioOpen]   = useState(false)
+  const dropdownRef = useRef(null)
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60)
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
+  /* Fermer le dropdown en cliquant en dehors */
+  useEffect(() => {
+    const handler = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setPortfolioOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handler)
+    return () => document.removeEventListener("mousedown", handler)
+  }, [])
+
+  /* Link classes adapt to scroll state */
+  const linkClass = scrolled
+    ? "font-sans text-[15px] tracking-[0.15em] uppercase font-bold text-neutral-600 hover:text-gold transition-colors duration-300"
+    : "font-sans text-[15px] tracking-[0.15em] uppercase text-white/70 hover:text-white transition-colors duration-300"
+
+  return (
+    <>
+      <motion.header
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        className={[
+          "fixed top-0 left-0 right-0 z-40",
+          "flex items-center justify-between",
+          "px-8 md:px-12 lg:px-16",
+          "transition-all duration-500",
+          scrolled
+            ? "bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm py-4"
+            : "bg-transparent py-7",
+        ].join(" ")}
+      >
+        {/* ── Logo ────────────────────────────────── */}
+        <a
+          href="/"
+          aria-label="Softgroup Immobilier — Accueil"
+        >
+          <Image
+            src={"/img/softgroupe.png"}
+            height={200}
+            width={200}
+            alt="softgroupe"
+            className={scrolled ? "" : "brightness-0 invert"}
+          />
+        </a>
+
+        {/* ── Desktop nav  _ hide for now───────────────────────────── */}
+        {/* <nav className="hidden lg:flex items-center gap-8">
+
+          Accueil
+          <a href="/" className={linkClass}>Accueil</a>
+
+          Le Groupe
+          <a href="/le-groupe" className={linkClass}>Le Groupe</a>
+
+          Portefeuille — avec dropdown
+          <div
+            ref={dropdownRef}
+            className="relative"
+            onMouseEnter={() => setPortfolioOpen(true)}
+            onMouseLeave={() => setPortfolioOpen(false)}
+          >
+            <button
+              onClick={() => setPortfolioOpen((v) => !v)}
+              className={[
+                "flex items-center gap-1 group",
+                linkClass,
+              ].join(" ")}
+            >
+              Portefeuille
+              <motion.span
+                animate={{ rotate: portfolioOpen ? 180 : 0 }}
+                transition={{ duration: 0.25 }}
+              >
+                <ChevronDown size={11} strokeWidth={1.5} className="mt-0.5" />
+              </motion.span>
+            </button>
+
+            <AnimatePresence>
+              {portfolioOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 6, scale: 0.97 }}
+                  transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute top-full left-1/2 -translate-x-1/2 pt-4 z-50"
+                >
+                  <div className="bg-white shadow-xl border border-gray-100 min-w-[240px] py-2">
+                    {PORTFOLIO_LINKS.map(({ label, href }) => (
+                      <a
+                        key={label}
+                        href={href}
+                        onClick={() => setPortfolioOpen(false)}
+                        className="block px-5 py-2.5 font-sans text-[15px] tracking-[0.12em] uppercase font-bold text-neutral-600 hover:text-gold hover:bg-gray-50 transition-all duration-200"
+                      >
+                        {label}
+                      </a>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          Gestion
+          <a href="/gestion-valorisation" className={linkClass}>Gestion</a>
+
+          Actualités
+          <a href="#actualites" className={linkClass}>Actualités</a>
+        </nav> */}
+
+        {/* ── CTA + Hamburger ─────────────────────── */}
+        <div className="flex items-center gap-4">
+          {/* Gold phone badge — always visible */}
+          <a
+            href="tel:+212661978104"
+            className="hidden sm:flex items-center gap-2 bg-gold text-noir font-sans text-[13px] font-bold tracking-[0.08em] px-4 py-2 rounded-full hover:bg-gold-light transition-colors duration-300 whitespace-nowrap shadow-sm"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="14" height="14">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.63 3.36 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+            +212 661 978 104
+          </a>
+
+          <button
+            onClick={() => setNavOpen(true)}
+            aria-label="Ouvrir le menu de navigation"
+            className="flex flex-col justify-center gap-[7px] p-2 -mr-2 group"
+          >
+            <span className={[
+              "block h-px transition-all duration-300 w-8 group-hover:w-5",
+              scrolled ? "bg-neutral-700" : "bg-white/80",
+            ].join(" ")} />
+            <span className={[
+              "block h-px transition-all duration-300 w-5 group-hover:w-8",
+              scrolled ? "bg-neutral-700" : "bg-white/80",
+            ].join(" ")} />
+          </button>
+        </div>
+      </motion.header>
+
+      <SideNav isOpen={navOpen} onClose={() => setNavOpen(false)} />
+    </>
+  )
+}

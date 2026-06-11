@@ -1,0 +1,182 @@
+"use client"
+
+import { useRef } from "react"
+import { motion, useInView } from "framer-motion"
+import { ArrowUpRight } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+
+/**
+ * Portfolio — Premium Grid
+ */
+
+const SEGMENTS = [
+  {
+    id: "logistique",
+    image: "https://res.cloudinary.com/dofyrwzop/image/upload/q_auto/f_auto/v1778504256/terrain_et_developpement_buqi7d.png",
+    anchorId: "logistique-industriel",
+    href:"/portefeuille#logistique",
+    label: "01",
+    title: "Logistique & Industriel",
+    description: "Des parcs d'activités accueillant des plateformes logistiques et industrielles conformes aux normes internationales.",
+    locations: ["Casablanca", "Kénitra", "Marrakech", "Tanger", "Agadir"],
+    span: "lg:col-span-7",
+  },
+  {
+    id: "bureaux",
+    image: "https://res.cloudinary.com/dofyrwzop/image/upload/q_auto/f_auto/v1781020524/SEGMENT_BUREAU_1_ozshr5.png",
+    anchorId: "bureaux-centres-d-affaires",
+    href:"/portefeuille#bureaux",
+    label: "02",
+    title: "Bureaux & Centres d'Affaires",
+    description: "Espaces de bureaux aménagés, sièges sociaux et villas à usage professionnel au cœur des quartiers d'affaires.",
+    locations: ["Casablanca"],
+    span: "lg:col-span-5",
+  },
+  {
+    id: "residentiel",
+    image: "https://res.cloudinary.com/dofyrwzop/image/upload/q_auto/f_auto/v1781021003/SEGMENT_RESIDEN_1_ftjouu.webp",
+    anchorId: "residentiel-de-prestige",
+    href:"/portefeuille#residentiel",
+    label: "03",
+    title: "Résidentiel de Prestige",
+    description: "Résidences de villas et condominiums d'appartements haut de gamme dans les quartiers les plus exclusifs.",
+    locations: ["Casablanca", "Marrakech"],
+    span: "lg:col-span-4",
+  },
+  {
+    id: "retail",
+    image: "https://res.cloudinary.com/dofyrwzop/image/upload/q_auto/f_auto/v1781008977/SEGMENT_COMMERC_rnxi3e.jpg",
+    anchorId: "retail-commerce",
+    href:"/portefeuille#retail",
+    label: "04",
+    title: "Commercial",
+    description: "Espaces commerciaux, showrooms et centres commerciaux stratégiquement implantés.",
+    locations: ["Casablanca"],
+    span: "lg:col-span-4",
+  },
+  {
+    id: "terrains",
+    image: "https://res.cloudinary.com/dofyrwzop/image/upload/q_auto/f_auto/v1781024281/TERRAIN_1_hoqd2c.png",
+    anchorId: "terrains-developpements",
+    href:"/portefeuille#terrains",
+    label: "05",
+    title: "Terrains & Développements",
+    description: "Lots de terrains viabilisés à fort potentiel de développement.",
+    locations: ["Maroc"],
+    span: "lg:col-span-4",
+  },
+]
+
+export default function Portfolio() {
+  const ref = useRef(null)
+  const inView = useInView(ref, { once: true, margin: "-8% 0px" })
+
+  return (
+    <section ref={ref} id="portefeuille" className="bg-white py-10 md:py-10 px-8 md:px-12 lg:px-24">
+      <div className="max-w-7xl mx-auto">
+
+        {/* HEADER */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="mb-14"
+        >
+          <p className="text-[17px] font-extrabold tracking-[0.4em] uppercase text-gold mb-4">
+            Nos Segments
+          </p>
+          <h2 className="font-serif text-3xl md:text-5xl text-neutral-900 font-light max-w-2xl leading-[1.1]">
+            Un Portefeuille Diversifié,
+            <br />
+            <span className="italic">Des Actifs d&apos;Exception</span>
+          </h2>
+          <p className="text-[19px] text-neutral-500 mt-5 max-w-xl leading-[1.85]">
+            Cinq segments d&apos;activité pour répondre aux exigences les plus
+            pointues du marché marocain.
+          </p>
+        </motion.div>
+
+        {/* GRID */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+          {SEGMENTS.map((seg, i) => (
+            <Link href={seg.href} className={`group relative overflow-hidden rounded-2xl cursor-pointer h-[340px] lg:h-[400px] ${seg.span}`}
+>
+            <motion.div
+              key={seg.id}
+              id={seg.anchorId}
+              initial={{ opacity: 0, y: 30 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, delay: i * 0.1 }}
+              className={`group relative overflow-hidden rounded-2xl cursor-pointer h-[340px] lg:h-[400px] ${seg.span}`}
+            >
+              {/* IMAGE */}
+              <Image
+                src={seg.image}
+                alt={seg.title}
+                fill
+                priority={i < 2}
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+
+              {/* DARK OVERLAY */}
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors duration-500" />
+
+              {/* GRADIENT */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+
+              {/* CONTENT */}
+              <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                <span className="text-[15px] font-extrabold tracking-[0.3em] uppercase text-gold/70 mb-2">
+                  {seg.label}
+                </span>
+                <h3 className="text-2xl md:text-3xl text-white font-light leading-tight mb-3 transition-colors duration-300 group-hover:text-gold">
+                  {seg.title}
+                </h3>
+                <p className="text-xs text-white/60 leading-relaxed mb-4 max-w-xs opacity-0 translate-y-2 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
+                  {seg.description}
+                </p>
+                <div className="flex items-center justify-between">
+                  <div className="flex flex-wrap gap-2">
+                    {seg.locations.map((loc) => (
+                      <span
+                        key={loc}
+                        className="text-[10px] tracking-[0.2em] uppercase text-white border border-white/40 rounded-md px-2.5 py-1"
+                      >
+                        {loc}
+                      </span>
+                    ))}
+                  </div>
+                  <ArrowUpRight
+                    size={18}
+                    strokeWidth={1.5}
+                    className="text-gold opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex-none"
+                  />
+                </div>
+              </div>
+            </motion.div>
+            </Link>
+          ))}
+        </div>
+
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={inView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.7 }}
+          className="mt-10 text-right"
+        >
+          <a
+            href="/portefeuille"
+            className="inline-flex items-center gap-3 text-[15px] font-bold tracking-[0.25em] uppercase text-neutral-500 hover:text-gold transition-colors duration-300 group"
+          >
+            Découvrir nos actifs
+            <span className="block h-px w-8 bg-current transition-all duration-300 group-hover:w-14" />
+          </a>
+        </motion.div>
+
+      </div>
+    </section>
+  )
+}
