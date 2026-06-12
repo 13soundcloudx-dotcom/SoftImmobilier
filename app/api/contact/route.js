@@ -11,9 +11,18 @@ import { Resend } from "resend"
    (Settings → Domains → Add Domain → add DNS TXT/MX records)
    ───────────────────────────────────────────────────────────── */
 
-const resend   = new Resend(process.env.RESEND_API_KEY)
 const EMAIL_TO = "immo.contact@softgroup.ma"
 const EMAIL_FROM = "noreply@softgroup.ma"
+
+/* Lazy-instantiate Resend so the module can be collected during
+   `next build` even when RESEND_API_KEY is missing in CI. */
+function getResend() {
+  const key = process.env.RESEND_API_KEY
+  if (!key) {
+    throw new Error("RESEND_API_KEY is not set. Add it to .env.local before sending mail.")
+  }
+  return new Resend(key)
+}
 
 /* ── Validators ─────────────────────────────────────────────── */
 function isValidEmail(email) {
@@ -172,7 +181,7 @@ export async function POST(request) {
 
     const fullName = `${prenom.trim()} ${nom.trim()}`
 
-    await resend.emails.send({
+    await getResend().emails.send({
       from:    EMAIL_FROM,
       to:      EMAIL_TO,
       replyTo: email.trim(),
